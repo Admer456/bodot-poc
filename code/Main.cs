@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 Admer Šuko
+// SPDX-FileCopyrightText: 2022 Admer Å uko
 // SPDX-License-Identifier: MIT
 
 using Bodot.Assets;
