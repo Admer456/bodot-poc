@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://3odajaqinww2"]
+
+[ext_resource type="Script" path="res://code/Main.cs" id="1_ydpnq"]
+
+[sub_resource type="Environment" id="Environment_bunas"]
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.008
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_8y6ka"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_ydpnq")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.801974, -0.194619, -0.564767, 0.597359, 0.261282, 0.758217, 0, -0.945439, 0.325799, 0, 0.98871, 0)
+light_color = Color(0.862745, 0.964706, 0.964706, 1)
+shadow_enabled = true
+shadow_blur = 2.756
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bunas")
+camera_attributes = SubResource("CameraAttributesPractical_8y6ka")
