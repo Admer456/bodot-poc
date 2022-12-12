@@ -78,8 +78,8 @@ namespace Bodot.Assets
 
 		public Vector2 CalculateUV( Vector3 point, int imageWidth, int imageHeight, float scale = 39.37f )
 		{
-			Vector3 axisU = ProjectionUVS[0].ToVector3().ToGodot() * Scale.x * scale * scale;
-			Vector3 axisV = ProjectionUVS[1].ToVector3().ToGodot() * Scale.y * scale * scale;
+			Vector3 axisU = ProjectionUVS[0].ToVector3().ToGodot() * (1.0f / Scale.x) * scale * scale;
+			Vector3 axisV = ProjectionUVS[1].ToVector3().ToGodot() * (1.0f / Scale.y) * scale * scale;
 
 			return new()
 			{
