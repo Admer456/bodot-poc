@@ -12,8 +12,7 @@ public partial class Main : Node3D
 {
 	public static Node3D Instance { get; private set; } = null;
 	public static MapDocument Map { get; private set; } = null;
-	public static Material TestMaterial { get; private set; } = null;
-	private static MeshInstance3D Worldspawn = null;
+	private static Node3D Worldspawn = null;
 
 	private void LoadMap( string path )
 	{
@@ -32,13 +31,10 @@ public partial class Main : Node3D
 	public override void _Ready()
 	{
 		Instance = this;
-		TestMaterial = GD.Load( "res://materials/default.tres" ) as Material;
-		if ( TestMaterial == null )
-		{
-			GD.PushWarning( "TestMaterial is null" );
-		}
 
-		LoadMap( "maps/tunnel" );
+		// The scene is completely empty before this point.
+		// This loads TrenchBroom/J.A.C.K./Hammer maps so long as they're in the Valve220 format
+		LoadMap( "maps/tunnel_jack2" );
 
 		// Todo: load a map or something and spawn
 		// players on info_player_start
@@ -87,7 +83,6 @@ public partial class Main : Node3D
 					light.LightColor = new Color( lightValues.x, lightValues.y, lightValues.z, 1.0f );
 					light.LightEnergy = lightValues.w;
 					light.OmniRange = lightValues.w * 10.0f;
-
 				}
 			}
 		}
