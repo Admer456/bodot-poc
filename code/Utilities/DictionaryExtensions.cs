@@ -69,6 +69,18 @@ namespace Bodot.Utilities
 
 	public static class DictionaryExtensions
 	{
+		public static TValue GetOrAdd<TKey, TValue>( this Dictionary<TKey, TValue> dictionary, TKey key ) where TValue : new()
+		{
+			if ( dictionary.TryGetValue( key, out TValue value ) )
+			{
+				return value;
+			}
+
+			TValue result = new();
+			dictionary.Add( key, result );
+			return result;
+		}
+
 		public static int GetInt( this Dictionary<string, string> list, string key, int defaultValue = 0 )
 		{
 			if ( !int.TryParse( list.GetValueOrDefault( key, string.Empty ), out int result ) )
