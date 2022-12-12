@@ -259,7 +259,7 @@ namespace Bodot.Assets
 			}
 
 			entity.Pairs.TryGetValue( "classname", out entity.ClassName );
-			if ( entity.Pairs.TryGetValue( "origin", out string? originString ) )
+			if ( entity.Pairs.TryGetValue( "origin", out string originString ) )
 			{
 				var components = originString.Split( ' ' );
 				entity.Centre.x = float.Parse( components[0] );
