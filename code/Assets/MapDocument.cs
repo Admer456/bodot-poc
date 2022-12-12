@@ -32,10 +32,8 @@ namespace Bodot.Assets
 
 		public static MapMaterial Load( string materialName )
 		{
-			Image image = Image.LoadFromFile( $"res://textures/{materialName}.png" );
-			if ( image == null )
+			if ( materialName == "NULL" )
 			{
-				GD.PushError( $"Cannot load image 'textures/{materialName}.png'" );
 				return Default;
 			}
 
@@ -45,6 +43,21 @@ namespace Bodot.Assets
 				return existingMaterial;
 			}
 
+			string path = $"textures/{materialName}.png";
+
+			if ( !FileAccess.FileExists( path ) )
+			{
+				GD.PushWarning( $"Cannot find image '{path}', gonna search in local resources..." );
+				path = $"res://{path}";
+			}
+			if ( !FileAccess.FileExists( path ) )
+			{
+				GD.PushError( $"Cannot find image '{path}', oops" );
+				return Default;
+			}
+
+			Image image = Image.LoadFromFile( path );
+			
 			ImageTexture texture = ImageTexture.CreateFromImage( image );
 
 			StandardMaterial3D material = new();
@@ -259,6 +272,17 @@ namespace Bodot.Assets
 
 		public static MapDocument FromValve220MapFile( string path )
 		{
+			if ( !FileAccess.FileExists( path ) )
+			{
+				GD.PushWarning( $"Cannot find file '{path}', gonna search in local resources..." );
+				path = $"res://{path}";
+			}
+			if ( !FileAccess.FileExists( path ) )
+			{
+				GD.PushError( $"Cannot find file '{path}', oops" );
+				return null;
+			}
+
 			using FileAccess fileAccess = FileAccess.Open( path, FileAccess.ModeFlags.Read );
 			
 			MapDocument map = new();

@@ -4,6 +4,7 @@
 using Bodot.Assets;
 using Bodot.Utilities;
 using System;
+using System.Diagnostics;
 
 // This is the entry point to our "engine"
 // Should inherit from MainLoop here, however it doesn't work yet
@@ -16,7 +17,7 @@ public partial class Main : Node3D
 
 	private void LoadMap( string path )
 	{
-		Map = MapDocument.FromValve220MapFile( $"res://{path}.map" );
+		Map = MapDocument.FromValve220MapFile( $"{path}.map" );
 		if ( Map == null )
 		{
 			return;
