@@ -18,6 +18,7 @@ namespace Bodot.Assets
 				Polygon3D poly = new Polygon3D( plane, radius );
 
 				// Then align its centre to the centre of this face... if we got any
+				// Otherwise precision issues will occur
 				Vector3 shift = faces[i].Centre - poly.Origin;
 				poly.Shift( shift );
 
@@ -37,9 +38,6 @@ namespace Bodot.Assets
 						poly = splitResult.Back ?? poly;
 					}
 				}
-
-				// Shift it back
-				poly.Shift( -shift );
 
 				// Axis:    Quake: Godot:
 				// Forward  +X     -Z

@@ -110,7 +110,10 @@ namespace Bodot.Geometry
 
 		public void Shift( Vector3 shift )
 		{
-			Points.ForEach( v => v += shift );
+			for ( int i = 0; i < Points.Count; i++ )
+			{
+				Points[i] = Points[i] + shift;
+			}
 		}
 
 		public bool Split( Plane plane, out Polygon3D? back, out Polygon3D? front )
@@ -154,10 +157,12 @@ namespace Bodot.Geometry
 			// Non-spanning cases
 			if ( numFrontPoints == 0 && numBackPoints == 0 )
 			{
+				float dot = Plane.Normal.Dot( plane.Normal );
+
 				// Usually the dot product will be 1 or -1 here
 				// If it's 1, it means this polygon's plane is really coplanar to
 				// the splitting plane, and as such, is the coplanar front plane
-				if ( Plane.Normal.Dot( plane.Normal ) > 0.0f )
+				if ( dot > 0.0f )
 				{
 					result.CoplanarFront = this;
 				}

@@ -109,14 +109,14 @@ namespace Bodot.Assets
 	public class MapBrush
 	{
 		public Vector3 Centre = Vector3.Zero;
-		//public AABB BoundingBox = new();
+		public AABB BoundingBox = new();
 		public List<MapFace> Faces = new();
 	}
 
 	public class MapEntity
 	{
 		public Vector3 Centre = Vector3.Zero;
-		//public AABB BoundingBox = new();
+		public AABB BoundingBox = new();
 		public List<MapBrush> Brushes = new();
 
 		public string ClassName = string.Empty;
