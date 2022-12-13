@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 using Bodot.Assets;
+using Bodot.Entities;
 using Bodot.Utilities;
 using System;
-using System.Diagnostics;
 
 // This is the entry point to our "engine"
 // Should inherit from MainLoop here, however it doesn't work yet
@@ -23,9 +23,18 @@ public partial class Main : Node3D
 			return;
 		}
 
-		Map.MapEntities.ForEach( entity => SpawnEntity( entity ) );
-
 		Worldspawn = MapGeometry.CreateMapNode( Map.MapEntities[0] );
+
+		Map.MapEntities.ForEach( entity => SpawnEntity( entity ) );
+	}
+
+	public T CreateAndSpawnEntity<T>() where T : Entity, new()
+	{
+		T entity = new T();
+		entity.Spawn();
+		mEntities.Add( entity );
+
+		return entity;
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -37,61 +46,26 @@ public partial class Main : Node3D
 		// This loads TrenchBroom/J.A.C.K./Hammer maps so long as they're in the Valve220 format
 		LoadMap( "maps/tunnel_jack2" );
 
-		// Todo: load a map or something and spawn
-		// players on info_player_start
-		mPlayerEntity = new();
-		mPlayerEntity.Spawn();
-		mEntities.Add( mPlayerEntity );
+		// Todo: load a map or something and spawn players on info_player_start
+		mPlayerEntity = CreateAndSpawnEntity<Player>();
 
-		// Clients use controller entities to actually
-		// interact w/ the game world. In theory this can even
-		// be an NPC or some vehicle, but right now we have
+		// Clients use controller entities to actually interact w/ the game world.
+		// In theory this can even be an NPC or some vehicle, but right now we have
 		// a dedicated Player entity
 		mClient = new() { Controller = mPlayerEntity };
 	}
 
 	private void SpawnEntity( MapEntity entity )
 	{
-		try
+		Entity ent = null;
+
+		switch ( entity.ClassName )
 		{
-			if ( entity.ClassName == "light" )
-			{
-				OmniLight3D light = Nodes.CreateNode<OmniLight3D>();
-				if ( entity.Pairs.TryGetValue( "targetname", out string targetname ) )
-				{
-					light.Name = targetname;
-				}
-				
-				light.GlobalPosition = entity.Centre.ToGodot();
-				light.OmniAttenuation = 1.0f;
-				light.OmniShadowMode = OmniLight3D.ShadowMode.DualParaboloid;
-				light.ShadowEnabled = true;
-
-				if ( entity.Pairs.ContainsKey( "_light" ) )
-				{
-					Vector4 lightValues = entity.Pairs["_light"].ToVector4();
-					if ( lightValues.w == 0.0f )
-					{
-						lightValues.w = 200.0f;
-					}
-
-					string lightString = entity.Pairs["_light"];
-					GD.Print( $"Light values: <{lightValues}> (string: '{lightString}')" );
-
-					// Convert from [0-255] to [0-1]
-					lightValues = lightValues * (1.0f / 255.0f);
-
-					light.LightColor = new Color( lightValues.x, lightValues.y, lightValues.z, 1.0f );
-					light.LightEnergy = lightValues.w;
-					light.OmniRange = lightValues.w * 10.0f;
-				}
-			}
+			case "light": ent = CreateAndSpawnEntity<Light>(); break;
+			default: GD.PushWarning( $"SpawnEntity: unknown class '{entity.ClassName}'" ); break;
 		}
-		catch ( Exception ex )
-		{
-			GD.PushError( $"Exception '{ex.Message}'" );
-			GD.PushError( $"Stack trace: {ex.StackTrace}" );
-		}
+
+		ent?.KeyValue( entity.Pairs );
 	}
 
 	public override void _Input( InputEvent @event )

@@ -15,6 +15,11 @@ namespace Bodot.Entities
 
 		}
 
+		public virtual void KeyValue( Dictionary<string, string> pairs )
+		{
+
+		}
+
 		public virtual void Destroy()
 		{
 
