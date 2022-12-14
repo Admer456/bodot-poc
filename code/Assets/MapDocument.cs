@@ -65,6 +65,9 @@ namespace Bodot.Assets
 			material.AlbedoTexture = texture;
 			material.Roughness = 1.0f;
 			material.Metallic = 0.0f;
+			material.MetallicSpecular = 0.0f;
+			material.SpecularMode = BaseMaterial3D.SpecularModeEnum.Disabled;
+			material.TextureFilter = BaseMaterial3D.TextureFilterEnum.NearestWithMipmapsAnisotropic;
 
 			Materials.Add( new()
 			{
