@@ -3,8 +3,6 @@
 
 using Bodot.Assets;
 using Bodot.Entities;
-using Bodot.Utilities;
-using System;
 
 // This is the entry point to our "engine"
 // Should inherit from MainLoop here, however it doesn't work yet
@@ -87,11 +85,6 @@ public partial class Main : Node3D
 
 		mClient.Update();
 		mClient.UpdateController();
-
-		if ( Worldspawn == null && Input.IsKeyPressed( Key.C ) )
-		{
-			LoadMap( "maps/tunnel" );
-		}
 	}
 
 	public override void _PhysicsProcess( double delta )
@@ -100,6 +93,6 @@ public partial class Main : Node3D
 	}
 
 	private Bodot.Client.Client mClient;
-	private Bodot.Entities.Player mPlayerEntity;
-	private List<Bodot.Entities.Entity> mEntities = new();
+	private Player mPlayerEntity;
+	private List<Entity> mEntities = new();
 }
