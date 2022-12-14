@@ -1,10 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://3odajaqinww2"]
+[gd_scene load_steps=6 format=3 uid="uid://3odajaqinww2"]
 
 [ext_resource type="Script" path="res://code/Main.cs" id="1_ydpnq"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ddsoc"]
+sky_top_color = Color(0.2952, 0.58384, 0.82, 1)
+sky_horizon_color = Color(0.6, 0.788235, 0.941176, 1)
+sky_curve = 0.197927
+ground_bottom_color = Color(0.12549, 0.188235, 0.196078, 1)
+ground_curve = 0.0214355
+sun_curve = 0.0803831
+
+[sub_resource type="Sky" id="Sky_3yqs1"]
+sky_material = SubResource("ProceduralSkyMaterial_ddsoc")
+
 [sub_resource type="Environment" id="Environment_bunas"]
+background_mode = 2
+background_color = Color(0.27451, 0.545098, 0.654902, 1)
+sky = SubResource("Sky_3yqs1")
+ambient_light_color = Color(1, 1, 1, 1)
+ssao_enabled = true
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+sdfgi_bounce_feedback = 1.4
+sdfgi_y_scale = 0
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.008
+volumetric_fog_density = 0.002
+volumetric_fog_ambient_inject = 1.0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_8y6ka"]
 
@@ -12,10 +33,15 @@ volumetric_fog_density = 0.008
 script = ExtResource("1_ydpnq")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.801974, -0.194619, -0.564767, 0.597359, 0.261282, 0.758217, 0, -0.945439, 0.325799, 0, 0.98871, 0)
-light_color = Color(0.862745, 0.964706, 0.964706, 1)
+transform = Transform3D(0.989921, -0.13908, -0.0266979, -0.0128642, -0.276048, 0.961058, -0.141034, -0.951028, -0.275055, 0.0925541, 0.915474, -0.0392918)
+light_color = Color(1, 0.960784, 0.862745, 1)
+light_energy = 2.0
+light_indirect_energy = 5.0
+light_angular_distance = 0.5
 shadow_enabled = true
-shadow_blur = 2.756
+shadow_bias = 0.01
+shadow_normal_bias = 2.8
+shadow_blur = 1.928
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_bunas")
