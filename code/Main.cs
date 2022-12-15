@@ -35,16 +35,15 @@ public partial class Main : Node3D
 		return entity;
 	}
 
-	// Called when the node enters the scene tree for the first time.
+	// Quasi-entry point of the "engine"
 	public override void _Ready()
 	{
 		Instance = this;
 
 		// The scene is completely empty before this point.
-		// This loads TrenchBroom/J.A.C.K./Hammer maps so long as they're in the Valve220 format
-		LoadMap( "maps/tunnel_jack2" );
+		// This loads raw TrenchBroom/J.A.C.K./Hammer maps, not BSPs keep in mind
 
-		// Todo: load a map or something and spawn players on info_player_start
+		// Todo: deferred player spawning on actual spawnpoint entities
 		mPlayerEntity = CreateAndSpawnEntity<Player>();
 
 		// Clients use controller entities to actually interact w/ the game world.
