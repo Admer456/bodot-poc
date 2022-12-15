@@ -80,6 +80,10 @@ namespace Bodot.Utilities
 		{
 			return new Vector2( vector.x, vector.y );
 		}
+		public static Vector2 XZ( this Vector3 vector )
+		{
+			return new Vector2( vector.x, vector.z );
+		}
 	}
 
 	public static class Nodes
