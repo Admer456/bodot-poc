@@ -59,7 +59,7 @@ namespace Bodot.Assets
 			public int VertexCount = 0;
 		}
 
-		private static Node3D CreateMapRenderSurfaceNode( Node3D parent, MapMaterial material, MapRenderSurface surface )
+		private static void AppendMapSurfaceToMesh( ArrayMesh mesh, MapMaterial material, MapRenderSurface surface )
 		{
 			SurfaceTool builder = new();
 			builder.Begin( Mesh.PrimitiveType.Triangles );
@@ -73,22 +73,8 @@ namespace Bodot.Assets
 
 			surface.VertexIndices.ForEach( index => builder.AddIndex( index ) );
 			builder.GenerateTangents();
-
 			builder.SetMaterial( material.EngineMaterial );
-			
-			ArrayMesh mesh = builder.Commit();
-
-			MeshInstance3D meshInstance = parent.CreateChild<MeshInstance3D>();
-			meshInstance.Mesh = mesh;
-			meshInstance.Visible = true;
-			meshInstance.GlobalPosition = Vector3.Zero;
-			meshInstance.CastShadow = GeometryInstance3D.ShadowCastingSetting.DoubleSided;
-
-			StaticBody3D staticBody = meshInstance.CreateChild<StaticBody3D>();
-			CollisionShape3D collisionShape = staticBody.CreateChild<CollisionShape3D>();
-			collisionShape.Shape = Nodes.CreateCollisionShape( mesh );
-
-			return meshInstance;
+			builder.Commit( mesh );
 		}
 
 		public static Node3D CreateMapNode( MapEntity brushEntity )
@@ -132,15 +118,25 @@ namespace Bodot.Assets
 				} );
 			} );
 
-			Node3D parentNode = Nodes.CreateNode<Node3D>();
-
+			ArrayMesh mesh = new ArrayMesh();
 			for ( int renderSurfaceId = 0; renderSurfaceId < renderSurfaces.Count; renderSurfaceId++ )
 			{
 				MapMaterial mapMaterial = renderSurfaces.Keys.ElementAt( renderSurfaceId );
 				MapRenderSurface surface = renderSurfaces.Values.ElementAt( renderSurfaceId );
 
-				Node3D surfaceNode = CreateMapRenderSurfaceNode( parentNode, mapMaterial, surface );
+				AppendMapSurfaceToMesh( mesh, mapMaterial, surface );
 			}
+
+			Node3D parentNode = Nodes.CreateNode<Node3D>();
+			parentNode.Name = brushEntity.ClassName;
+
+			MeshInstance3D meshInstance = parentNode.CreateChild<MeshInstance3D>();
+			meshInstance.Mesh = mesh;
+			meshInstance.CastShadow = GeometryInstance3D.ShadowCastingSetting.DoubleSided;
+
+			StaticBody3D staticBody = parentNode.CreateChild<StaticBody3D>();
+			CollisionShape3D collisionShape = staticBody.CreateChild<CollisionShape3D>();
+			collisionShape.Shape = Nodes.CreateCollisionShape( mesh );
 
 			return parentNode;
 		}

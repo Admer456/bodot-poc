@@ -99,18 +99,22 @@ namespace Bodot.Utilities
 				GD.PushWarning( "Nodes.CreateCollisionShape: 'concave = false' is not implemented yet, switching to true" );
 			}
 
-			// The collision mesh is a bunch of triangles, separated by triplets of Vector3
+			// The collision mesh is a bunch of triangles, organised in triplets of Vector3
 			List<Vector3> collisionMesh = new();
-			// Since ArrayMesh is kinda difficult to get data from *directly*, we use MeshDataTool
-			MeshDataTool tool = new();
-			tool.CreateFromSurface( mesh, 0 );
 
-			for ( int faceId = 0; faceId < tool.GetFaceCount(); faceId++ )
+			// Since ArrayMesh is kinda difficult to get data from *directly*, we use MeshDataTool
+			for ( int surfaceId = 0; surfaceId < mesh._Surfaces.Count; surfaceId++ )
 			{
-				for ( int vertexNum = 0; vertexNum < 3; vertexNum++ )
+				MeshDataTool tool = new();
+				tool.CreateFromSurface( mesh, surfaceId );
+
+				for ( int faceId = 0; faceId < tool.GetFaceCount(); faceId++ )
 				{
-					int vertexId = tool.GetFaceVertex( faceId, vertexNum );
-					collisionMesh.Add( tool.GetVertex( vertexId ) );
+					for ( int vertexNum = 0; vertexNum < 3; vertexNum++ )
+					{
+						int vertexId = tool.GetFaceVertex( faceId, vertexNum );
+						collisionMesh.Add( tool.GetVertex( vertexId ) );
+					}
 				}
 			}
 
