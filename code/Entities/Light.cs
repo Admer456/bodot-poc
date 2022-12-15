@@ -23,7 +23,10 @@ namespace Bodot.Entities
 
 			mLight.GlobalPosition = pairs["origin"].ToVector3().ToGodot();
 			mLight.OmniAttenuation = 1.0f;
-			mLight.OmniShadowMode = OmniLight3D.ShadowMode.DualParaboloid;
+			mLight.LightIndirectEnergy = 2.0f;
+			mLight.LightSize = 0.5f;
+			mLight.LightAngularDistance = 0.5f;
+			mLight.OmniShadowMode = OmniLight3D.ShadowMode.Cube;
 			mLight.ShadowEnabled = true;
 
 			if ( pairs.ContainsKey( "_light" ) )
@@ -43,6 +46,12 @@ namespace Bodot.Entities
 				mLight.LightColor = new Color( lightValues.x, lightValues.y, lightValues.z, 1.0f );
 				mLight.LightEnergy = lightValues.w;
 				mLight.OmniRange = lightValues.w * 10.0f;
+			}
+			else
+			{
+				mLight.LightColor = Color.Color8( 255, 255, 255 );
+				mLight.LightEnergy = 1.0f;
+				mLight.OmniRange = 10.0f;
 			}
 		}
 
