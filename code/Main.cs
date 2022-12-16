@@ -42,6 +42,7 @@ public partial class Main : Node3D
 
 		// The scene is completely empty before this point.
 		// This loads raw TrenchBroom/J.A.C.K./Hammer maps, not BSPs keep in mind
+		LoadMap( "maps/surf" );
 
 		// Todo: deferred player spawning on actual spawnpoint entities
 		mPlayerEntity = CreateAndSpawnEntity<Player>();
