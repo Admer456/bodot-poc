@@ -24,6 +24,7 @@ public partial class Main : Node3D
 		Worldspawn = MapGeometry.CreateBrushModelNode( Map.MapEntities[0] );
 
 		Map.MapEntities.ForEach( entity => SpawnEntity( entity ) );
+		mEntities.ForEach( entity => entity.PostSpawn() );
 	}
 
 	public T CreateAndSpawnEntity<T>() where T : Entity, new()
@@ -55,15 +56,24 @@ public partial class Main : Node3D
 
 	private void SpawnEntity( MapEntity entity )
 	{
-		Entity ent = null;
+		Entity ent;
 
 		switch ( entity.ClassName )
 		{
 			case "light": ent = CreateAndSpawnEntity<Light>(); break;
-			default: GD.PushWarning( $"SpawnEntity: unknown class '{entity.ClassName}'" ); break;
+			case "func_detail": ent = CreateAndSpawnEntity<FuncDetail>(); break;
+			case "func_breakable": ent = CreateAndSpawnEntity<FuncBreakable>(); break;
+			case "func_rotating": ent = CreateAndSpawnEntity<FuncRotating>(); break;
+			default: GD.PushWarning( $"SpawnEntity: unknown class '{entity.ClassName}'" ); return;
 		}
 
-		ent?.KeyValue( entity.Pairs );
+		// Brush entity
+		if ( entity.Brushes.Count > 0 )
+		{
+			ent.AddBrushModel( entity );
+		}
+
+		ent.KeyValue( entity.Pairs );
 	}
 
 	public override void _Input( InputEvent @event )

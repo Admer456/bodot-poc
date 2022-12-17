@@ -10,6 +10,7 @@ namespace Bodot.Entities
 			base.Spawn();
 
 			mLight = Nodes.CreateNode<OmniLight3D>();
+			mRootNode = mLight;
 		}
 
 		public override void KeyValue( Dictionary<string, string> pairs )
@@ -21,7 +22,6 @@ namespace Bodot.Entities
 				mLight.Name = targetname;
 			}
 
-			mLight.GlobalPosition = pairs["origin"].ToVector3().ToGodot();
 			mLight.OmniAttenuation = 1.0f;
 			mLight.LightIndirectEnergy = 2.0f;
 			mLight.LightSize = 0.5f;
