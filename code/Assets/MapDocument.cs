@@ -69,6 +69,19 @@ namespace Bodot.Assets
 			material.SpecularMode = BaseMaterial3D.SpecularModeEnum.Disabled;
 			material.TextureFilter = BaseMaterial3D.TextureFilterEnum.NearestWithMipmapsAnisotropic;
 
+			if ( materialName[0] == '~' )
+			{
+				material.EmissionEnabled = true;
+				material.EmissionTexture = texture;
+				material.EmissionEnergyMultiplier = 1.2f;
+			}
+			else if ( materialName[0] == '{' )
+			{
+				material.Transparency = BaseMaterial3D.TransparencyEnum.AlphaScissor;
+				material.AlphaScissorThreshold = 0.5f;
+				//material.CullMode = BaseMaterial3D.CullModeEnum.Disabled;
+			}
+
 			Materials.Add( new()
 			{
 				Name = materialName,
