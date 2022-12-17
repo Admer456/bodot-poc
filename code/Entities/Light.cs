@@ -23,18 +23,17 @@ namespace Bodot.Entities
 			}
 
 			mLight.OmniAttenuation = 1.0f;
-			mLight.LightIndirectEnergy = 2.0f;
-			mLight.LightSize = 0.5f;
-			mLight.LightAngularDistance = 0.5f;
 			mLight.OmniShadowMode = OmniLight3D.ShadowMode.Cube;
 			mLight.ShadowEnabled = true;
+			mLight.ShadowBias = 0.02f;
+			mLight.ShadowNormalBias = 1.2f;
 
 			if ( pairs.ContainsKey( "_light" ) )
 			{
 				Vector4 lightValues = pairs["_light"].ToVector4();
 				if ( lightValues.w == 0.0f )
 				{
-					lightValues.w = 200.0f;
+					lightValues.w = 300.0f;
 				}
 
 				string lightString = pairs["_light"];
@@ -45,14 +44,19 @@ namespace Bodot.Entities
 
 				mLight.LightColor = new Color( lightValues.x, lightValues.y, lightValues.z, 1.0f );
 				mLight.LightEnergy = lightValues.w;
-				mLight.OmniRange = lightValues.w * 10.0f;
+				mLight.OmniRange = Mathf.Sqrt( lightValues.w ) * 10.0f;
 			}
 			else
 			{
 				mLight.LightColor = Color.Color8( 255, 255, 255 );
 				mLight.LightEnergy = 1.0f;
-				mLight.OmniRange = 10.0f;
+				mLight.OmniRange = 6.5f;
 			}
+
+			mLight.LightIndirectEnergy = 1.5f;
+			mLight.LightVolumetricFogEnergy = 1.5f;
+			mLight.LightSize = 1.5f;
+			mLight.LightAngularDistance = 0.1f;
 		}
 
 		OmniLight3D mLight;
