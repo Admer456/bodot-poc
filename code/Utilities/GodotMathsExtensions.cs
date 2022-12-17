@@ -25,9 +25,9 @@ namespace Bodot.Utilities
 
 	public static class VectorExtensions
 	{
-		public static Vector3 ToGodot( this Vector3 vector )
+		public static Vector3 ToGodot( this Vector3 vector, float scale = 1.0f / 39.37f )
 		{
-			return new Vector3( -vector.y, vector.z, -vector.x ) / 39.37f;
+			return new Vector3( -vector.y, vector.z, -vector.x ) * scale;
 		}
 		public static Vector3 Average( this Vector3[] vectors )
 		{
