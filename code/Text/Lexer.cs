@@ -81,7 +81,7 @@ namespace Bodot.Text
 				}
 
 				// Check for delimiters
-				if ( IsDelimiter() && !IgnoreDelimiters )
+				if ( IsDelimiter() )
 				{
 					result += mText[mPosition];
 					IncrementPosition();
@@ -273,6 +273,11 @@ namespace Bodot.Text
 
 		bool IsDelimiter()
 		{
+			if ( IgnoreDelimiters )
+			{
+				return false;
+			}
+
 			// First check if this is actually a number we're parsing
 			// I.e. prevent splitting up 10.25 into tokens '10', '.' and '25
 			if ( mPosition > 0 && mText[mPosition] == '.' && (mPosition + 1) < mText.Length )
