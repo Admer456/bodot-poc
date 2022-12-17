@@ -32,7 +32,7 @@ namespace Bodot.Assets
 
 		public static MapMaterial Load( string materialName )
 		{
-			if ( materialName == "NULL" )
+			if ( materialName == "NULL" || materialName == "ORIGIN" )
 			{
 				return Default;
 			}
@@ -237,6 +237,15 @@ namespace Bodot.Assets
 				}
 			}
 
+			brush.BoundingBox = new AABB( brush.Faces[0].Centre, Vector3.One * 0.001f );
+			brush.Faces.ForEach( face =>
+			{
+				for ( int i = 0; i < 3; i++  )
+				{
+					brush.BoundingBox = brush.BoundingBox.Expand( face.PlaneDefinition[i] );
+				}
+			} );
+
 			return brush;
 		}
 
@@ -277,10 +286,17 @@ namespace Bodot.Assets
 			entity.Pairs.TryGetValue( "classname", out entity.ClassName );
 			if ( entity.Pairs.TryGetValue( "origin", out string originString ) )
 			{
-				var components = originString.Split( ' ' );
-				entity.Centre.x = float.Parse( components[0] );
-				entity.Centre.y = float.Parse( components[1] );
-				entity.Centre.z = float.Parse( components[2] );
+				entity.Centre = originString.ToVector3().ToGodot();
+				entity.Pairs["origin"] = $"{entity.Centre.x} {entity.Centre.y} {entity.Centre.z}";
+			}
+
+			if ( entity.Brushes.Count > 0 )
+			{
+				entity.BoundingBox = entity.Brushes[0].BoundingBox;
+				for ( int i = 1; i < entity.Brushes.Count; i++ )
+				{
+					entity.BoundingBox = entity.BoundingBox.Merge( entity.Brushes[i].BoundingBox );
+				}
 			}
 
 			return entity;

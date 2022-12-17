@@ -3,6 +3,7 @@
 
 using Bodot.Geometry;
 using Bodot.Utilities;
+using System;
 
 namespace Bodot.Assets
 {
@@ -83,8 +84,12 @@ namespace Bodot.Assets
 			builder.Commit( mesh );
 		}
 
-		public static Node3D CreateMapNode( MapEntity brushEntity )
+		public static Node3D CreateBrushModelNode( MapEntity brushEntity )
 		{
+			Vector3 brushOrigin = GetBrushOrigin( brushEntity ).ToGodot();
+			GD.Print( $"Origin of '{brushEntity.ClassName}': {brushOrigin}" );
+			brushEntity.Pairs["origin"] = $"{brushOrigin.x} {brushOrigin.y} {brushOrigin.z}";
+			
 			brushEntity.Brushes.ForEach( brush => CreateBrushPolygons( ref brush.Faces ) );
 
 			Dictionary<MapMaterial, MapRenderSurface> renderSurfaces = new();
@@ -93,7 +98,7 @@ namespace Bodot.Assets
 			{
 				brush.Faces.ForEach( face =>
 				{
-					if ( face.MaterialName == "NULL" )
+					if ( face.MaterialName == "NULL" || face.MaterialName == "ORIGIN" )
 					{
 						return;
 					}
@@ -119,7 +124,7 @@ namespace Bodot.Assets
 					{
 						renderSurface.Uvs.Add( face.CalculateUV( position, face.Material.Width, face.Material.Height ) );
 						renderSurface.Normals.Add( planeNormal );
-						renderSurface.Vertices.Add( position );
+						renderSurface.Vertices.Add( position - brushOrigin );
 					} );
 				} );
 			} );
@@ -145,6 +150,43 @@ namespace Bodot.Assets
 			collisionShape.Shape = Nodes.CreateCollisionShape( mesh );
 
 			return parentNode;
+		}
+
+		private static Vector3 GetBrushOrigin( MapEntity brushEntity )
+		{
+			if ( brushEntity.ClassName == "worldspawn" )
+			{
+				GD.Print( "worldspawn" );
+				return Vector3.Zero;
+			}
+
+			Vector3 origin = new();
+			int count = 0;
+
+			// The brush polygons haven't been created yet, but we
+			// likely have enough information from the plane definitions
+			brushEntity.Brushes.ForEach( brush =>
+			{
+				brush.Faces.ForEach( face =>
+				{
+					if ( face.MaterialName != "ORIGIN" )
+					{
+						return;
+					}
+
+					origin += face.Centre;
+					count++;
+				} );
+			} );
+
+			if ( count == 0 )
+			{
+				GD.Print( "bbox" );
+				return brushEntity.BoundingBox.GetCenter();
+			}
+
+			GD.Print( "origin brush" );
+			return origin / count;
 		}
 	}
 }

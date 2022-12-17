@@ -21,7 +21,7 @@ public partial class Main : Node3D
 			return;
 		}
 
-		Worldspawn = MapGeometry.CreateMapNode( Map.MapEntities[0] );
+		Worldspawn = MapGeometry.CreateBrushModelNode( Map.MapEntities[0] );
 
 		Map.MapEntities.ForEach( entity => SpawnEntity( entity ) );
 	}
