@@ -43,7 +43,13 @@ namespace Bodot.Assets
 				// Forward  +X     -Z
 				// Right    -Y     +X
 				// Up       +Z     +Y
-				poly.Points = poly.Points.Select( p => p = new Vector3( -p.y, p.z, -p.x ) * scale ).ToList();
+				//poly.Points = poly.Points.Select( p => p = new Vector3( -p.y, p.z, -p.x ) * scale ).ToList();
+				for ( int p = 0; p < poly.Points.Count; p++ )
+				{
+					poly.Points[p] = poly.Points[p]
+						.Snapped( Vector3.One * 0.25f )
+						.ToGodot( scale );
+				}
 
 				// Finally add the subdivided polygon
 				faces[i].Polygon = poly;
