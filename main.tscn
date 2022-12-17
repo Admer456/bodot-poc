@@ -23,9 +23,10 @@ sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_bounce_feedback = 1.4
 sdfgi_y_scale = 0
+glow_bloom = 0.5
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.002
-volumetric_fog_ambient_inject = 1.0
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0.752941, 0.752941, 0.752941, 1)
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_8y6ka"]
 
