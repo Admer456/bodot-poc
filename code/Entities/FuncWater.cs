@@ -1,0 +1,18 @@
+﻿
+namespace Bodot.Entities
+{
+	public class FuncWater : Entity
+	{
+		public override void PostSpawn()
+		{
+			base.PostSpawn();
+
+			StaticBody3D body = mRootNode.GetChild<StaticBody3D>( 1 );
+			if ( body != null )
+			{
+				// Make non-solid
+				body.CollisionLayer = 0;
+			}
+		}
+	}
+}

@@ -69,7 +69,7 @@ namespace Bodot.Assets
 			material.SpecularMode = BaseMaterial3D.SpecularModeEnum.Disabled;
 			material.TextureFilter = BaseMaterial3D.TextureFilterEnum.NearestWithMipmapsAnisotropic;
 
-			if ( materialName[0] == '~' )
+			if ( materialName.Contains( '~' ) )
 			{
 				material.EmissionEnabled = true;
 				material.EmissionTexture = texture;

@@ -64,6 +64,7 @@ public partial class Main : Node3D
 			case "func_detail": ent = CreateAndSpawnEntity<FuncDetail>(); break;
 			case "func_breakable": ent = CreateAndSpawnEntity<FuncBreakable>(); break;
 			case "func_rotating": ent = CreateAndSpawnEntity<FuncRotating>(); break;
+			case "func_water": ent = CreateAndSpawnEntity<FuncWater>(); break;
 			default: GD.PushWarning( $"SpawnEntity: unknown class '{entity.ClassName}'" ); return;
 		}
 
