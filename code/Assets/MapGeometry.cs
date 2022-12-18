@@ -44,10 +44,10 @@ namespace Bodot.Assets
 				// Forward  +X     -Z
 				// Right    -Y     +X
 				// Up       +Z     +Y
-				//poly.Points = poly.Points.Select( p => p = new Vector3( -p.y, p.z, -p.x ) * scale ).ToList();
 				for ( int p = 0; p < poly.Points.Count; p++ )
 				{
 					poly.Points[p] = poly.Points[p]
+						// Snap to a grid of 0.25 to avoid some micro gaps
 						.Snapped( Vector3.One * 0.25f )
 						.ToGodot( scale );
 				}
