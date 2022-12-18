@@ -29,6 +29,7 @@ namespace Bodot.Client
 	public struct ClientCommands
 	{
 		// Movement direction in world coordinates
+		// Not exactly normalised, but doesn't contain speed
 		public Vector3 MovementDirection { get; set; }
 		// Euler view angles in world coordinates
 		public Vector3 ViewAngles { get; set; }
