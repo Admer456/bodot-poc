@@ -22,7 +22,7 @@ namespace Bodot.Entities
 			{
 				if ( pairs.TryGetValue( "model", out string modelPath ) )
 				{
-					mMesh.Mesh = Assets.GltfModel.Load( modelPath );
+					mMesh.Mesh = Assets.GLTFModel.Load( modelPath );
 				}
 			}
 			catch( Exception ex )

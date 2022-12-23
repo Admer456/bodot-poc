@@ -1,7 +1,7 @@
 ﻿
 namespace Bodot.Assets
 {
-	public class GltfModel
+	public class GLTFModel
 	{
 		public static ArrayMesh Load( string path )
 		{
