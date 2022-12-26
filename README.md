@@ -49,7 +49,7 @@ It's done!
 
 * Everything **works** outside the Godot Editor as an exported projects, which is the most important part.
 
-The only remaining questions are about audio, UI and interacting with Godot's `RenderingServer` to maybe directly draw surfaces from a custom UI system (e.g. somebody may want a lightweight HTML/CSS solution).
+The only remaining questions are about audio, UI and interacting with Godot's `RenderingServer` to maybe directly draw surfaces from a custom UI system (e.g. somebody may want a lightweight HTML/CSS solution). Godot's existing UI system is pretty good, custom UI is just a thing of curiosity.
 
 Soon I'll start working on a more serious prototype, with more proper code and a design doc as a guideline.
 
@@ -58,3 +58,28 @@ Sidenote: Godot features a `MainLoop` class which can be used to do this *withou
 ## ...Bodot?
 
 The name is subject to change. The B stems from an engine project I've been working on called [BurekTech X](https://github.com/Admer456/btx-testbed), and both projects have more or less the exact same ideas.
+
+## Ayo, where's the external game DLL code?
+
+Here's the code:
+```
+using Godot;
+
+namespace TestGameModule
+{
+	public class Game
+	{
+		public static void CreateGame()
+		{
+			GD.Print( "Hello from <TestGameModule>!" );
+		}
+	}
+}
+```
+
+1) Create a project called `TestGameModule`
+2) Install the `GodotSharp` (beta4.0.0-v5) package
+3) Build and place into `<Godot project>/bin/TestGameModule.dll` along with any relevant JSON files
+
+Ignore the fact that it's called `CreateGame`, it was originally meant to implement an `IGame` interface but there were many many troubles working with dependencies, until I finally figured out how to resolve it all, and I just didn't bother setting it back to how it was. Wait a couple more months for a more proper prototype. :3
+
