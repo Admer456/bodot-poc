@@ -35,21 +35,25 @@ In "Bodot"
 
 ## Current state
 
-~~Right now, all assets are part of the Godot Project and gotta be imported as such. In the upcoming days/weeks, I'll start messing with external game DLLs and actually try to see if this works at all as an exported project.~~  
-The project, when exported, can load external assets just fine. Still haven't tested external game DLLs.
+It's done!
 
-So far? We got a tiny bit of an entity system that uses Godot nodes behind the scenes, and a custom TrenchBroom map loader which, most likely, will end up in a custom map compiler. Loading brushes as-is is not optimal for larger levels, these would benefit from a custom occlusion culling solution, e.g. an octree-based PVS.
+* We got a tiny bit of an **entity system** that uses Godot nodes behind the scenes.
 
-Supported entities are `light`, `func_detail`, `func_breakable` (does nothing) and `func_rotating` (rotates yaw at a hardcoded speed).
+* Also got a custom TrenchBroom **map loader** which, most likely, will end up in a custom map compiler. Loading brushes as-is is not optimal for larger levels, these would benefit from a custom occlusion culling solution, e.g. an octree-based PVS.
 
-The proof of concept is mostly done. Remaining things to do include:
-- improving the player movement code a bit (add surfing and crouching)
-- testing external game DLLs
-- loading an animated model
+* Supported **entities** are `light`, `func_detail`, `func_breakable` (does nothing), `prop_test` and `func_rotating` (rotates yaw at a hardcoded speed).
 
-After that, I'll start working on a more serious prototype, with more proper code and a design doc as a guideline.
+* **Animated models** can be generated from code, which will be leveraged in the prototype when asset loader plugins are a thing. Right now, static GLTFs are loaded as-is.
 
-Godot features a `MainLoop` class which can be used to do this *without* a "main node", but it currently doesn't work in C#, at least til it's implemented as a GDExtension extension.
+* **External DLLs** are supported. This one was the trickiest to do because of problems with having GodotSharp as a dependency in external DLLs. Using a custom `AssemblyLoadContext` to resolve dependencies for external DLLs helped.
+
+* Everything **works** outside the Godot Editor as an exported projects, which is the most important part.
+
+The only remaining questions are about audio, UI and interacting with Godot's `RenderingServer` to maybe directly draw surfaces from a custom UI system (e.g. somebody may want a lightweight HTML/CSS solution).
+
+Soon I'll start working on a more serious prototype, with more proper code and a design doc as a guideline.
+
+Sidenote: Godot features a `MainLoop` class which can be used to do this *without* a "main node", but it currently doesn't work in C#, at least til it's implemented as a GDExtension extension.
 
 ## ...Bodot?
 
