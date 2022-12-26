@@ -1,8 +1,12 @@
 // SPDX-FileCopyrightText: 2022 Admer Šuko
 // SPDX-License-Identifier: MIT
 
+using Bodot;
 using Bodot.Assets;
 using Bodot.Entities;
+using System;
+using System.IO;
+using System.Reflection;
 
 // This is the entry point to our "engine"
 // Should inherit from MainLoop here, however it doesn't work yet
@@ -97,6 +101,36 @@ public partial class Main : Node3D
 
 		mClient.Update();
 		mClient.UpdateController();
+
+		try
+		{
+			if ( !mGameAssemblyIsLoaded && Input.IsKeyPressed( Key.X ) )
+			{
+				// BodotPoc1 loads a copy of GodotSharp.
+				// TestGameModule, unfortunately, loads its own copy, so calling GD.Print
+				// in there will cause a segfault. This is why we came up with a custom assembly
+				// load context, so we can override the way assemblies are loaded and avoid this segfault.
+				BodotAssemblyLoadContext loadContext = new();
+				Assembly gameModule = loadContext.LoadFromAssemblyPath( $"{Directory.GetCurrentDirectory()}/bin/TestGameModule.dll" );
+
+				var types = gameModule.GetTypes();
+				foreach ( var type in types )
+				{
+					if ( type.Name == "Game" )
+					{
+						var factoryInfo = type.GetMethod( "CreateGame" );
+						factoryInfo.Invoke( null, null );
+						mGameAssemblyIsLoaded = true;
+						break;
+					}
+				}
+			}
+		}
+		catch ( Exception ex )
+		{
+			GD.PrintErr( $"Unhandled exception: {ex.Message}" );
+			GD.PrintErr( $"Stack trace: {ex.StackTrace}" );
+		}
 	}
 
 	public override void _PhysicsProcess( double delta )
@@ -107,4 +141,5 @@ public partial class Main : Node3D
 	private Bodot.Client.Client mClient;
 	private Player mPlayerEntity;
 	private List<Entity> mEntities = new();
+	private bool mGameAssemblyIsLoaded = false;
 }
