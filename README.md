@@ -1,4 +1,7 @@
 
+*Update 17th May 2023:*  
+*This is now an actual project! Please check out [Elegy Engine](https://github.com/ElegyEngine) for more details.*
+
 # "Bodot" proof of concept
 
 This is a bit of research I'm doing to see if I can basically build an "engine" on top of Godot, which lets me have a workflow similar to GoldSRC/Source. Don't ask why. Ask why not.
